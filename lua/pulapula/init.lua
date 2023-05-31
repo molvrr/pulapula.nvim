@@ -13,6 +13,11 @@ end
 
 local navigate = function(dir)
   local tmux = os.getenv('TMUX')
+
+  if not tmux then
+    return vim.cmd.wincmd(dirs()[dir].key)
+  end
+
   local active_socket = vim.split(tmux, ',')[1]
   local pane = os.getenv('TMUX_PANE')
   local tmux_cmd = string.format('tmux -S %s select-pane -t %s -%s', active_socket, pane, dir)
@@ -28,6 +33,11 @@ end
 
 local maximize = function()
   local tmux = os.getenv('TMUX')
+
+  if not tmux then
+    return vim.cmd.only()
+  end
+
   local windows = vim.api.nvim_tabpage_list_wins(0)
   local active_socket = vim.split(tmux, ',')[1]
 
