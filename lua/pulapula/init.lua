@@ -14,7 +14,7 @@ end
 local navigate = function(dir)
   local tmux = os.getenv('TMUX')
   local active_socket = vim.split(tmux, ',')[1]
-  local pane = vim.fn.expand('$TMUX_PANE')
+  local pane = os.getenv('TMUX_PANE')
   local tmux_cmd = string.format('tmux -S %s select-pane -t %s -%s', active_socket, pane, dir)
   local zoomed = string.match(vim.fn.system("tmux list-panes -F '#F'"), 'Z')
   local should_move = tmux and not (zoomed and not vim.g.pulapula_ignore_zoom) and dirs()[dir].move
