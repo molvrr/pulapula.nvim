@@ -20,7 +20,7 @@ local navigate = function(dir)
   local should_move = tmux and not (zoomed and not vim.g.pulapula_ignore_zoom) and dirs()[dir].move
 
   if should_move then
-    return vim.fn.system(tmux_cmd)
+    vim.fn.system(tmux_cmd)
   else
     vim.cmd.wincmd(dirs()[dir].key)
   end
