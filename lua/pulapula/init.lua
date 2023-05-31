@@ -13,7 +13,7 @@ end
 
 local navigate = function(dir)
   local tmux = os.getenv('TMUX')
-  local active_socket = vim.split(vim.fn.expand('$TMUX'), ',')[1]
+  local active_socket = vim.split(tmux, ',')[1]
   local pane = vim.fn.expand('$TMUX_PANE')
   local tmux_cmd = string.format('tmux -S %s select-pane -t %s -%s', active_socket, pane, dir)
   local zoomed = string.match(vim.fn.system("tmux list-panes -F '#F'"), 'Z')
@@ -29,7 +29,7 @@ end
 local maximize = function()
   local tmux = os.getenv('TMUX')
   local windows = vim.api.nvim_tabpage_list_wins(0)
-  local active_socket = vim.split(vim.fn.expand('$TMUX'), ',')[1]
+  local active_socket = vim.split(tmux, ',')[1]
 
   if #windows == 1 and tmux then
     vim.fn.system(string.format('tmux -S %s resize-pane -Z', active_socket))
@@ -38,7 +38,15 @@ local maximize = function()
   end
 end
 
+local move_left = function() navigate('L') end
+local move_right = function() navigate('R') end
+local move_down = function() navigate('D') end
+local move_up = function() navigate('U') end
+
 return {
   maximize = maximize,
-  navigate = navigate,
+  move_left = move_left,
+  move_right = move_right,
+  move_down = move_down,
+  move_up = move_up,
 }
